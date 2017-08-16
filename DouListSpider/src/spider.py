@@ -15,9 +15,7 @@ from bs4 import BeautifulSoup
 
 
 def getPageNums(url):
-    firstPage = getHtmlText(url, None)
-    if firstPage == "":
-        print("Error: Wrong Page")
+    firstPage = getHtmlText(url)
     print(firstPage)
     soup = BeautifulSoup(firstPage, 'html.parser')
     p = soup.find('span', attrs={'class': 'thispage'})
@@ -143,7 +141,7 @@ def main():
 
     id_1001nights = ['40243926']
     id_all = ['3574376', '37743651', '43837485', '45777605']
-    id_logicMind = ['45777605']
+    id_logicMind = ['3574376']
 
 #     bookInfoFile = '1001Nights.txt'
 #     bookTagFile = '1001NightsTags.txt'
