@@ -15,7 +15,7 @@ from bs4 import BeautifulSoup
 
 
 def getPageNums(url):
-    firstPage = getHtmlText(url)
+    firstPage = getHtmlText(url, None)
     print(firstPage)
     soup = BeautifulSoup(firstPage, 'html.parser')
     p = soup.find('span', attrs={'class': 'thispage'})
