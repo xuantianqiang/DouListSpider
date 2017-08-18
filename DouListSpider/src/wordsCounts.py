@@ -16,16 +16,17 @@ import plotly.graph_objs as go
 import os
 from os import path
 from scipy.misc import imread
-from wordcloud import WordCloud
+from wordcloud import WordCloud, STOPWORDS
 import jieba
+from nltk.corpus import stopwords
 
 
 # 读入文本文件，将所有词放入list
 def readInWords(file, wordslist):
-    f = open(file, 'r')
+    f = open(file, 'r', encoding='utf-8')
     lines = f.readlines()
     for line in lines:
-        print(line)
+        #         print(line)
         wordslist.append(str(line).replace('\n', ''))
     print('%d words have been read' % len(wordslist))
 
@@ -37,7 +38,7 @@ def doWordsCounts(file, wordslist):
     y = []
     with open(file, 'wb') as file:
         for kv in list:
-            if re.findall(r'[理想国20出版社更多广西一千零一夜]', kv[0]):
+            if re.findall(r'[理想国20出版社更多广西一千零一夜逻辑思维]', kv[0]):
                 continue
             x.append(kv[0])
             y.append(kv[1])
@@ -74,6 +75,13 @@ def draw_wordcloud(file):
     cut_text = " ".join(jieba.cut(comment_text))
     d = path.dirname(__file__)  # 当前文件文件夹所在目录
     color_mask = imread("c.jpg")  # 读取背景图片
+
+    # 设置停用词
+    stopwordsset = set(STOPWORDS)
+    stoplist = ['理想国', '一千零一夜', '逻辑思维', '逻辑', '广西师范大学', '思维', '罗辑']
+    for word in stoplist:
+        stopwordsset.add(word)
+
     cloud = WordCloud(
         # 设置字体，不指定就会出现乱码
         font_path="a.ttf",
@@ -82,10 +90,13 @@ def draw_wordcloud(file):
         background_color='white',
         # 词云形状
         mask=color_mask,
+        # 停用词
+        stopwords=stopwordsset,
         # 允许最大词汇
         max_words=1000,
         # 最大号字体
         max_font_size=40
+
     )
     word_cloud = cloud.generate(cut_text)  # 产生词云
 
@@ -100,7 +111,12 @@ def main():
 
     srcfile = '1001NightsTags.txt'
     savefile = '1001NightsTagCounts.txt'
-#     draw_wordcloud(file)
+
+    #     srcfile = 'LogicMindTags.txt'
+    #     savefile = 'LogicMindTagsCounts.txt'
+    # draw cloud
+    #     draw_wordcloud(srcfile)
+    # draw bar
     py.sign_in('xuantianqiang', 'dLaBV0bPxT6SbHfweDoC')
     wordslist = []
     readInWords(srcfile, wordslist)
