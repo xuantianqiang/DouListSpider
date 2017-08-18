@@ -8,6 +8,7 @@ Created on 2017年8月12日
 @author: Sophon
 '''
 
+import time
 import requests
 from bs4 import BeautifulSoup
 
@@ -16,7 +17,7 @@ from bs4 import BeautifulSoup
 
 def getPageNums(url):
     firstPage = getHtmlText(url, None)
-    print(firstPage)
+#     print(firstPage)
     soup = BeautifulSoup(firstPage, 'html.parser')
     p = soup.find('span', attrs={'class': 'thispage'})
     return p.attrs['data-total-page']
@@ -77,6 +78,7 @@ def getTags(booklist, tags):
             continue
         parserBookTags(text, tags)
         cnt += 1
+        time.sleep(3)
 
 
 def printContents(booklist):
@@ -90,7 +92,7 @@ def printContents(booklist):
 
 
 def writeInfoToFile(books, file):
-    print('Writing book infos to file=========')
+    print('  Writing book infos to file=========')
     with open(file, 'ab') as f:
         for book in books:
             info = book['title'] + '  :  ' + book['url'] + '\n'
@@ -129,6 +131,7 @@ def crawDouList(urlbase, idlist, bookInfoFile, bookTagFile):
             parserBookLists(booklist, text)
             print('Writing %d-th page info to file:' % i)
             writeInfoToFile(booklist, bookInfoFile)
+            time.sleep(1)
     # 遍历书籍信息列表，获取标签
     tags = []
     getTags(booklist, tags)
@@ -140,7 +143,7 @@ def main():
     urlbase = 'https://www.douban.com/doulist/'
 
     id_1001nights = ['40243926']
-    id_all = ['3574376', '37743651', '43837485', '45777605']
+    id_all = ['3574376', '37743651', '43837485', '3569759']
     id_logicMind = ['3574376']
 
 #     bookInfoFile = '1001Nights.txt'
